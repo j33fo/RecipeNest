@@ -1,0 +1,10 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:53047",
+"RedirectUrl": "",
+"LaunchCommand": "npm run dev",
+"WorkingDirectory": "C:\\Users\\jeefo\\Downloads\\project2\\assignment\\assignment.Server\\..\\assignment.client",
+"MaxTimeoutInSeconds": "120",
+"KeepRunning": "false"
+}
+}
