@@ -10,8 +10,8 @@ namespace assignment.Server.Data
         {
         }
 
-        public DbSet<Chef> Chefs { get; set; }
-        public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<Chef> Chefs { get; set; } =null!;
+        public DbSet<Recipe> Recipes { get; set; } = null!; 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,7 +44,7 @@ namespace assignment.Server.Data
                     Title = "Spaghetti Carbonara",
                     Ingredients = "Spaghetti, eggs, pancetta, Parmesan cheese, black pepper",
                     Instructions = "Cook spaghetti. Fry pancetta. Mix eggs and cheese. Combine all with spaghetti.",
-                    ChefId = 1
+                    ChefId = 1 // Set the foreign key value
                 },
                 new Recipe
                 {
@@ -52,10 +52,9 @@ namespace assignment.Server.Data
                     Title = "Tiramisu",
                     Ingredients = "Ladyfingers, mascarpone cheese, coffee, cocoa powder, sugar, eggs",
                     Instructions = "Layer ladyfingers soaked in coffee with mascarpone mixture. Dust with cocoa powder.",
-                    ChefId = 2
+                    ChefId = 2 // Set the foreign key value
                 }
             );
         }
     }
 }
-

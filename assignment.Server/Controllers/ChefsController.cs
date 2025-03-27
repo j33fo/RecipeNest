@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using assignment.Server.Data;
 using assignment.Server.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace assignment.Server.Controllers
@@ -21,7 +22,6 @@ namespace assignment.Server.Controllers
         [HttpGet("featured")]
         public async Task<ActionResult<IEnumerable<Chef>>> GetFeaturedChefs()
         {
-            // Logic to get featured chefs (e.g., top 3 chefs)
             var featuredChefs = await _context.Chefs.Take(3).ToListAsync();
             return featuredChefs;
         }
@@ -84,3 +84,4 @@ namespace assignment.Server.Controllers
         }
     }
 }
+

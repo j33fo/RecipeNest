@@ -7,6 +7,6 @@ namespace assignment.Server.Models
         public string Ingredients { get; set; } = string.Empty;
         public string Instructions { get; set; } = string.Empty;
         public int ChefId { get; set; }
-        public Chef Chef { get; set; } = new Chef();
+        public Chef? Chef { get; set; } =null!;
     }
 }
