@@ -5,6 +5,9 @@ import ChefsList from './components/ChefsList';
 import ChefProfile from './components/ChefProfile';
 import ChefDashboard from './components/ChefDashboard';
 import Header from './components/Header';
+import RecipeList from './components/RecipeList';
+import RecipeEdit from './components/RecipeEdit';
+import RecipeCreate from './components/RecipeCreate';
 
 const App = () => {
     return (
@@ -15,6 +18,9 @@ const App = () => {
                 <Route path="/chefs" element={<ChefsList />} />
                 <Route path="/chef/:id" element={<ChefProfile />} />
                 <Route path="/dashboard" element={<ChefDashboard />} />
+                <Route path="/recipes" element={<RecipeList />} />
+                <Route path="/recipe/create" element={<RecipeCreate />} />
+                <Route path="/recipe/:id/edit" element={<RecipeEdit />} />
             </Routes>
         </Router>
     );

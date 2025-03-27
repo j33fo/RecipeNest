@@ -5,6 +5,7 @@ using assignment.Server.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace assignment.Server.Controllers
 {
@@ -13,36 +14,63 @@ namespace assignment.Server.Controllers
     public class ChefsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<ChefsController> _logger;
 
-        public ChefsController(ApplicationDbContext context)
+        public ChefsController(ApplicationDbContext context, ILogger<ChefsController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         [HttpGet("featured")]
         public async Task<ActionResult<IEnumerable<Chef>>> GetFeaturedChefs()
         {
-            var featuredChefs = await _context.Chefs.Take(3).ToListAsync();
-            return featuredChefs;
+            try
+            {
+                var featuredChefs = await _context.Chefs.Take(3).ToListAsync();
+                return Ok(featuredChefs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting featured chefs");
+                return StatusCode(500, new { message = "An error occurred while retrieving featured chefs" });
+            }
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Chef>>> GetChefs()
         {
-            return await _context.Chefs.ToListAsync();
+            try
+            {
+                var chefs = await _context.Chefs.ToListAsync();
+                return Ok(chefs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting all chefs");
+                return StatusCode(500, new { message = "An error occurred while retrieving chefs" });
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Chef>> GetChef(int id)
         {
-            var chef = await _context.Chefs.FindAsync(id);
-
-            if (chef == null)
+            try
             {
-                return NotFound();
-            }
+                var chef = await _context.Chefs.FindAsync(id);
 
-            return chef;
+                if (chef == null)
+                {
+                    return NotFound(new { message = "Chef not found" });
+                }
+
+                return Ok(chef);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting chef with ID: {ChefId}", id);
+                return StatusCode(500, new { message = "An error occurred while retrieving the chef" });
+            }
         }
 
         [HttpPost]
@@ -86,51 +114,73 @@ namespace assignment.Server.Controllers
         [HttpGet("me")]
         public async Task<ActionResult<Chef>> GetCurrentChef()
         {
-            // For now, we'll return the first chef as a placeholder
-            var chef = await _context.Chefs.FirstOrDefaultAsync();
-            if (chef == null)
+            try
             {
-                return NotFound();
+                var chef = await _context.Chefs.FirstOrDefaultAsync();
+                if (chef == null)
+                {
+                    return NotFound(new { message = "No chef found" });
+                }
+                return Ok(chef);
             }
-            return chef;
-        }
-
-        [HttpPut("me")]
-        public async Task<IActionResult> UpdateCurrentChef(Chef chef)
-        {
-            // For now, we'll update the first chef as a placeholder
-            var existingChef = await _context.Chefs.FirstOrDefaultAsync();
-            if (existingChef == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                _logger.LogError(ex, "Error getting current chef");
+                return StatusCode(500, new { message = "An error occurred while retrieving the current chef" });
             }
-
-            existingChef.Name = chef.Name;
-            existingChef.Bio = chef.Bio;
-            existingChef.Specialty = chef.Specialty;
-            existingChef.Email = chef.Email;
-            existingChef.Location = chef.Location;
-            existingChef.PictureUrl = chef.PictureUrl;
-
-            await _context.SaveChangesAsync();
-            return Ok(existingChef);
         }
 
         [HttpGet("me/recipes")]
         public async Task<ActionResult<IEnumerable<Recipe>>> GetCurrentChefRecipes()
         {
-            // For now, we'll return recipes for the first chef
-            var chef = await _context.Chefs.FirstOrDefaultAsync();
-            if (chef == null)
+            try
             {
-                return NotFound("Chef not found");
+                var chef = await _context.Chefs
+                    .Include(c => c.Recipes)
+                    .FirstOrDefaultAsync();
+
+                if (chef == null)
+                {
+                    _logger.LogWarning("No chef found in the database");
+                    return NotFound(new { message = "No chef found" });
+                }
+
+                _logger.LogInformation($"Found chef {chef.Id} with {chef.Recipes.Count} recipes");
+                return Ok(chef.Recipes.ToList());
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting current chef's recipes");
+                return StatusCode(500, new { message = "An error occurred while retrieving the recipes" });
+            }
+        }
 
-            var recipes = await _context.Recipes
-                .Where(r => r.ChefId == chef.Id)
-                .ToListAsync();
+        [HttpPut("me")]
+        public async Task<IActionResult> UpdateCurrentChef(Chef chef)
+        {
+            try
+            {
+                var existingChef = await _context.Chefs.FirstOrDefaultAsync();
+                if (existingChef == null)
+                {
+                    return NotFound(new { message = "No chef found" });
+                }
 
-            return recipes;
+                existingChef.Name = chef.Name;
+                existingChef.Bio = chef.Bio;
+                existingChef.Specialty = chef.Specialty;
+                existingChef.Email = chef.Email;
+                existingChef.Location = chef.Location;
+                existingChef.PictureUrl = chef.PictureUrl;
+
+                await _context.SaveChangesAsync();
+                return Ok(existingChef);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating current chef");
+                return StatusCode(500, new { message = "An error occurred while updating the chef" });
+            }
         }
     }
 }

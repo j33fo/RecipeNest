@@ -12,7 +12,7 @@ using assignment.Server.Data;
 namespace assignment.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250327184035_InitialCreate")]
+    [Migration("20250327195432_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
