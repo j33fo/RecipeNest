@@ -65,8 +65,8 @@ namespace assignment.Server.Migrations
                 columns: new[] { "Id", "Bio", "ContactInfo", "Email", "Location", "Name", "PictureUrl", "Specialty" },
                 values: new object[,]
                 {
-                    { 1, "An experienced chef with a passion for Italian cuisine.", "chef.john@example.com", "chef.john@example.com", "New York", "Chef John", "https://example.com/chef-john.jpg", "Italian Cuisine" },
-                    { 2, "A pastry chef known for her delicious desserts.", "chef.jane@example.com", "chef.jane@example.com", "Los Angeles", "Chef Jane", "https://example.com/chef-jane.jpg", "Pastry" }
+                    { 1, "An experienced chef with a passion for Italian cuisine.", "chef.john@example.com", "chef.john@example.com", "New York", "Chef John", "https://as1.ftcdn.net/v2/jpg/09/75/08/76/1000_F_975087698_PrQR8CiZQOCDZpzvksP5YRGcDzVTgqEB.jpg", "Italian Cuisine" },
+                    { 2, "A pastry chef known for her delicious desserts.", "chef.jane@example.com", "chef.jane@example.com", "Los Angeles", "Chef Jane", "https://imgs.search.brave.com/9zdV4Sb45HXHEd0P3O4Q_wqGfqxpRGKWnogpfaBpaQg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzExLzUxLzY4LzY5/LzM2MF9GXzExNTE2/ODY5NzZfWDFFaGpY/N1E3R2tIUW1LdElV/UmtpVGU5WFlDUXkz/Q1guanBn", "Pastry" }
                 });
 
             migrationBuilder.InsertData(
@@ -74,8 +74,8 @@ namespace assignment.Server.Migrations
                 columns: new[] { "Id", "ChefId", "CookingTime", "CreatedAt", "Description", "Difficulty", "ImageUrl", "Ingredients", "Instructions", "Likes", "Title" },
                 values: new object[,]
                 {
-                    { 1, 1, 30, new DateTime(2024, 3, 27, 0, 0, 0, 0, DateTimeKind.Utc), "Classic Italian pasta dish with eggs, cheese, and pancetta", "medium", "https://example.com/carbonara.jpg", "Spaghetti, eggs, pancetta, Parmesan cheese, black pepper", "Cook spaghetti. Fry pancetta. Mix eggs and cheese. Combine all with spaghetti.", 0, "Spaghetti Carbonara" },
-                    { 2, 2, 45, new DateTime(2024, 3, 27, 0, 0, 0, 0, DateTimeKind.Utc), "Traditional Italian dessert with coffee-soaked ladyfingers and mascarpone cream", "medium", "https://example.com/tiramisu.jpg", "Ladyfingers, mascarpone cheese, eggs, sugar, coffee, cocoa powder", "Dip ladyfingers in coffee. Layer with mascarpone mixture. Dust with cocoa.", 0, "Classic Tiramisu" }
+                    { 1, 1, 30, new DateTime(2024, 3, 27, 0, 0, 0, 0, DateTimeKind.Utc), "Classic Italian pasta dish with eggs, cheese, and pancetta", "medium", "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/spaghetti-carbonara-366e331.jpg?quality=90&webp=true&resize=93,84", "Spaghetti, eggs, pancetta, Parmesan cheese, black pepper", "Cook spaghetti. Fry pancetta. Mix eggs and cheese. Combine all with spaghetti.", 0, "Spaghetti Carbonara" },
+                    { 2, 2, 45, new DateTime(2024, 3, 27, 0, 0, 0, 0, DateTimeKind.Utc), "Traditional Italian dessert with coffee-soaked ladyfingers and mascarpone cream", "medium", "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/recipe-image-legacy-id-1001515_11-62be4ec.jpg?quality=90&webp=true&resize=300,272", "Ladyfingers, mascarpone cheese, eggs, sugar, coffee, cocoa powder", "Dip ladyfingers in coffee. Layer with mascarpone mixture. Dust with cocoa.", 0, "Classic Tiramisu" }
                 });
 
             migrationBuilder.CreateIndex(

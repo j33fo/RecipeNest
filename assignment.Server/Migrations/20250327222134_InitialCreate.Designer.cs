@@ -12,7 +12,7 @@ using assignment.Server.Data;
 namespace assignment.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250327195432_InitialCreate")]
+    [Migration("20250327222134_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -74,7 +74,7 @@ namespace assignment.Server.Migrations
                             Email = "chef.john@example.com",
                             Location = "New York",
                             Name = "Chef John",
-                            PictureUrl = "https://example.com/chef-john.jpg",
+                            PictureUrl = "https://as1.ftcdn.net/v2/jpg/09/75/08/76/1000_F_975087698_PrQR8CiZQOCDZpzvksP5YRGcDzVTgqEB.jpg",
                             Specialty = "Italian Cuisine"
                         },
                         new
@@ -85,7 +85,7 @@ namespace assignment.Server.Migrations
                             Email = "chef.jane@example.com",
                             Location = "Los Angeles",
                             Name = "Chef Jane",
-                            PictureUrl = "https://example.com/chef-jane.jpg",
+                            PictureUrl = "https://imgs.search.brave.com/9zdV4Sb45HXHEd0P3O4Q_wqGfqxpRGKWnogpfaBpaQg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzExLzUxLzY4LzY5/LzM2MF9GXzExNTE2/ODY5NzZfWDFFaGpY/N1E3R2tIUW1LdElV/UmtpVGU5WFlDUXkz/Q1guanBn",
                             Specialty = "Pastry"
                         });
                 });
@@ -149,7 +149,7 @@ namespace assignment.Server.Migrations
                             CreatedAt = new DateTime(2024, 3, 27, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Classic Italian pasta dish with eggs, cheese, and pancetta",
                             Difficulty = "medium",
-                            ImageUrl = "https://example.com/carbonara.jpg",
+                            ImageUrl = "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/spaghetti-carbonara-366e331.jpg?quality=90&webp=true&resize=93,84",
                             Ingredients = "Spaghetti, eggs, pancetta, Parmesan cheese, black pepper",
                             Instructions = "Cook spaghetti. Fry pancetta. Mix eggs and cheese. Combine all with spaghetti.",
                             Likes = 0,
@@ -163,7 +163,7 @@ namespace assignment.Server.Migrations
                             CreatedAt = new DateTime(2024, 3, 27, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Traditional Italian dessert with coffee-soaked ladyfingers and mascarpone cream",
                             Difficulty = "medium",
-                            ImageUrl = "https://example.com/tiramisu.jpg",
+                            ImageUrl = "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/recipe-image-legacy-id-1001515_11-62be4ec.jpg?quality=90&webp=true&resize=300,272",
                             Ingredients = "Ladyfingers, mascarpone cheese, eggs, sugar, coffee, cocoa powder",
                             Instructions = "Dip ladyfingers in coffee. Layer with mascarpone mixture. Dust with cocoa.",
                             Likes = 0,

@@ -5,7 +5,7 @@ const Header = () => {
     return (
         <header>
             <div className="logo">
-                <img src="/src/assets/react.svg" alt="RecipeNest Logo" />
+                <img src="/src/assets/logo.png" alt="RecipeNest Logo" />
             </div>
             <nav>
                 <ul>

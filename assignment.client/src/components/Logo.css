@@ -1,0 +1,35 @@
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: #4CAF50;
+  transition: color 0.2s;
+}
+
+.logo:hover {
+  color: #45a049;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+@media (max-width: 768px) {
+  .logo-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .logo-text {
+    font-size: 1.2rem;
+  }
+} 
