@@ -26,48 +26,51 @@ const RecipeList = () => {
             });
     }, []);
 
-    if (loading) {
-        return <div className="loading">Loading recipes...</div>;
-    }
-
-    if (error) {
-        return <div className="error">{error}</div>;
-    }
-
     return (
         <div className="recipe-list">
             <div className="recipe-list-header">
                 <h1>All Recipes</h1>
                 <button 
                     className="add-recipe-btn"
-                    onClick={() => navigate('/recipe/create')}
+                    onClick={() => navigate('/recipes/create')}
                 >
-                    Add New Recipe
+                    Add Recipe
                 </button>
             </div>
 
-            <div className="recipes-grid">
-                {recipes.map(recipe => (
-                    <div key={recipe.id} className="recipe-card">
-                        <img src={recipe.imageUrl} alt={recipe.title} />
-                        <h3>{recipe.title}</h3>
-                        <p>{recipe.description}</p>
-                        <div className="recipe-info">
-                            <span>Cooking Time: {recipe.cookingTime} mins</span>
-                            <span>Difficulty: {recipe.difficulty}</span>
-                            <span>By: {recipe.chef?.name}</span>
+            {loading ? (
+                <div className="loading">Loading recipes...</div>
+            ) : error ? (
+                <div className="error">{error}</div>
+            ) : (
+                <div className="recipes-grid">
+                    {recipes.map(recipe => (
+                        <div key={recipe.id} className="recipe-card">
+                            {recipe.imageUrl && (
+                                <div className="recipe-image">
+                                    <img src={recipe.imageUrl} alt={recipe.title} />
+                                </div>
+                            )}
+                            <div className="recipe-content">
+                                <h3>{recipe.title}</h3>
+                                <p>{recipe.description}</p>
+                                <div className="recipe-meta">
+                                    <span>Cooking Time: {recipe.cookingTime} minutes</span>
+                                    <span>Difficulty: {recipe.difficulty}</span>
+                                </div>
+                                <div className="recipe-actions">
+                                    <button 
+                                        className="view-btn"
+                                        onClick={() => navigate(`/recipes/${recipe.id}`)}
+                                    >
+                                        View Recipe
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <div className="recipe-actions">
-                            <button 
-                                className="view-recipe-btn"
-                                onClick={() => navigate(`/recipe/${recipe.id}`)}
-                            >
-                                View Recipe
-                            </button>
-                        </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

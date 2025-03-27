@@ -26,6 +26,7 @@ const ChefDashboard = () => {
         location: '',
         pictureUrl: ''
     });
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         // Fetch chef and recipes data from the backend
@@ -38,6 +39,7 @@ const ChefDashboard = () => {
             })
             .catch(error => {
                 console.error('Error fetching chef:', error);
+                setError('Failed to load chef data');
                 setLoading(false);
             });
 
@@ -49,6 +51,7 @@ const ChefDashboard = () => {
             })
             .catch(error => {
                 console.error('Error fetching recipes:', error);
+                setError('Failed to load recipes');
                 setLoading(false);
             });
     }, []);
@@ -95,7 +98,7 @@ const ChefDashboard = () => {
     };
 
     const handleEditRecipe = (recipeId) => {
-        navigate(`/recipe/${recipeId}/edit`);
+        navigate(`/recipes/${recipeId}/edit`);
     };
 
     const handleEditProfile = async (e) => {
@@ -154,206 +157,55 @@ const ChefDashboard = () => {
     }
 
     return (
-        <div className="chef-dashboard">
+        <div className="dashboard">
             <div className="dashboard-header">
-                <h1>Chef Dashboard</h1>
-                <button 
-                    className="edit-profile-btn"
-                    onClick={() => setShowEditProfile(true)}
-                >
-                    Edit Profile
+                <h1>My Dashboard</h1>
+                <button className="add-recipe-btn" onClick={() => navigate('/recipes/create')}>
+                    Add New Recipe
                 </button>
             </div>
 
-            <div className="dashboard-content">
-                <div className="profile-section">
-                    {chef && (
-                        <div className="profile-info">
-                            <img src={chef.pictureUrl} alt={chef.name} className="profile-picture" />
-                            <h2>{chef.name}</h2>
-                            <p>{chef.bio}</p>
-                            <p><strong>Specialty:</strong> {chef.specialty}</p>
-                            <p><strong>Location:</strong> {chef.location}</p>
-                            <p><strong>Email:</strong> {chef.email}</p>
-                        </div>
-                    )}
-                </div>
-
-                <div className="recipes-section">
-                    <div className="recipes-header">
+            {loading ? (
+                <div className="loading">Loading...</div>
+            ) : error ? (
+                <div className="error">{error}</div>
+            ) : (
+                <div className="dashboard-content">
+                    <div className="dashboard-section">
                         <h2>My Recipes</h2>
-                        <button 
-                            className="add-recipe-btn"
-                            onClick={() => setShowAddRecipe(true)}
-                        >
-                            Add New Recipe
-                        </button>
-                    </div>
-
-                    <div className="recipes-grid">
-                        {recipes.map(recipe => (
-                            <div key={recipe.id} className="recipe-card">
-                                <img src={recipe.imageUrl} alt={recipe.title} />
-                                <h3>{recipe.title}</h3>
-                                <p>{recipe.description}</p>
-                                <div className="recipe-actions">
-                                    <button 
-                                        className="edit-recipe-btn"
-                                        onClick={() => handleEditRecipe(recipe.id)}
-                                    >
-                                        Edit
-                                    </button>
-                                    <button 
-                                        className="delete-recipe-btn"
-                                        onClick={() => handleDeleteRecipe(recipe.id)}
-                                    >
-                                        Delete
-                                    </button>
+                        <div className="recipes-grid">
+                            {recipes.map((recipe) => (
+                                <div key={recipe.id} className="recipe-card">
+                                    {recipe.imageUrl && (
+                                        <div className="recipe-image">
+                                            <img src={recipe.imageUrl} alt={recipe.title} />
+                                        </div>
+                                    )}
+                                    <div className="recipe-content">
+                                        <h3>{recipe.title}</h3>
+                                        <p>{recipe.description}</p>
+                                        <div className="recipe-meta">
+                                            <span>Cooking Time: {recipe.cookingTime} minutes</span>
+                                            <span>Difficulty: {recipe.difficulty}</span>
+                                        </div>
+                                        <div className="recipe-actions">
+                                            <button
+                                                className="view-btn"
+                                                onClick={() => navigate(`/recipes/${recipe.id}`)}
+                                            >
+                                                View
+                                            </button>
+                                            <button
+                                                className="edit-btn"
+                                                onClick={() => navigate(`/recipes/${recipe.id}/edit`)}
+                                            >
+                                                Edit
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-            {showAddRecipe && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <h2>Add New Recipe</h2>
-                        <form onSubmit={handleSubmitRecipe}>
-                            <div className="form-group">
-                                <label>Title:</label>
-                                <input
-                                    type="text"
-                                    value={newRecipe.title}
-                                    onChange={(e) => setNewRecipe({...newRecipe, title: e.target.value})}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Description:</label>
-                                <textarea
-                                    value={newRecipe.description}
-                                    onChange={(e) => setNewRecipe({...newRecipe, description: e.target.value})}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Ingredients:</label>
-                                <textarea
-                                    value={newRecipe.ingredients}
-                                    onChange={(e) => setNewRecipe({...newRecipe, ingredients: e.target.value})}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Instructions:</label>
-                                <textarea
-                                    value={newRecipe.instructions}
-                                    onChange={(e) => setNewRecipe({...newRecipe, instructions: e.target.value})}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Cooking Time (minutes):</label>
-                                <input
-                                    type="number"
-                                    value={newRecipe.cookingTime}
-                                    onChange={(e) => setNewRecipe({...newRecipe, cookingTime: parseInt(e.target.value)})}
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Difficulty:</label>
-                                <select
-                                    value={newRecipe.difficulty}
-                                    onChange={(e) => setNewRecipe({...newRecipe, difficulty: e.target.value})}
-                                    required
-                                >
-                                    <option value="easy">Easy</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="hard">Hard</option>
-                                </select>
-                            </div>
-                            <div className="form-group">
-                                <label>Image URL:</label>
-                                <input
-                                    type="text"
-                                    value={newRecipe.imageUrl}
-                                    onChange={(e) => setNewRecipe({...newRecipe, imageUrl: e.target.value})}
-                                    required
-                                />
-                            </div>
-                            <div className="form-actions">
-                                <button type="submit" disabled={loading}>
-                                    {loading ? 'Adding...' : 'Add Recipe'}
-                                </button>
-                                <button type="button" onClick={() => setShowAddRecipe(false)}>
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
-
-            {showEditProfile && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <h2>Edit Profile</h2>
-                        <form onSubmit={handleEditProfile}>
-                            <div className="form-group">
-                                <label>Name</label>
-                                <input
-                                    type="text"
-                                    value={editedProfile.name}
-                                    onChange={e => setEditedProfile(prev => ({ ...prev, name: e.target.value }))}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Bio</label>
-                                <textarea
-                                    value={editedProfile.bio}
-                                    onChange={e => setEditedProfile(prev => ({ ...prev, bio: e.target.value }))}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Specialty</label>
-                                <input
-                                    type="text"
-                                    value={editedProfile.specialty}
-                                    onChange={e => setEditedProfile(prev => ({ ...prev, specialty: e.target.value }))}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Email</label>
-                                <input
-                                    type="email"
-                                    value={editedProfile.email}
-                                    onChange={e => setEditedProfile(prev => ({ ...prev, email: e.target.value }))}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Location</label>
-                                <input
-                                    type="text"
-                                    value={editedProfile.location}
-                                    onChange={e => setEditedProfile(prev => ({ ...prev, location: e.target.value }))}
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Profile Picture URL</label>
-                                <input
-                                    type="url"
-                                    value={editedProfile.pictureUrl}
-                                    onChange={e => setEditedProfile(prev => ({ ...prev, pictureUrl: e.target.value }))}
-                                />
-                            </div>
-                            <div className="form-actions">
-                                <button type="submit">Save Changes</button>
-                                <button type="button" onClick={() => setShowEditProfile(false)}>Cancel</button>
-                            </div>
-                        </form>
+                            ))}
+                        </div>
                     </div>
                 </div>
             )}

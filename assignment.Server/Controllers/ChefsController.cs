@@ -182,6 +182,21 @@ namespace assignment.Server.Controllers
                 return StatusCode(500, new { message = "An error occurred while updating the chef" });
             }
         }
+
+        [HttpGet("{id}/recipes")]
+        public async Task<ActionResult<IEnumerable<Recipe>>> GetChefRecipes(int id)
+        {
+            var chef = await _context.Chefs
+                .Include(c => c.Recipes)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (chef == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(chef.Recipes);
+        }
     }
 }
 

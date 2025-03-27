@@ -8,6 +8,8 @@ import Header from './components/Header';
 import RecipeList from './components/RecipeList';
 import RecipeEdit from './components/RecipeEdit';
 import RecipeCreate from './components/RecipeCreate';
+import RecipeView from './components/RecipeView';
+import RecipePortfolio from './components/RecipePortfolio';
 
 const App = () => {
     return (
@@ -17,10 +19,12 @@ const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/chefs" element={<ChefsList />} />
                 <Route path="/chef/:id" element={<ChefProfile />} />
+                <Route path="/chef/:id/portfolio" element={<RecipePortfolio />} />
                 <Route path="/dashboard" element={<ChefDashboard />} />
                 <Route path="/recipes" element={<RecipeList />} />
-                <Route path="/recipe/create" element={<RecipeCreate />} />
-                <Route path="/recipe/:id/edit" element={<RecipeEdit />} />
+                <Route path="/recipes/create" element={<RecipeCreate />} />
+                <Route path="/recipes/:id/edit" element={<RecipeEdit />} />
+                <Route path="/recipes/:id" element={<RecipeView />} />
             </Routes>
         </Router>
     );

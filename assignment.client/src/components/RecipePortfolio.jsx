@@ -1,26 +1,36 @@
 // src/components/RecipePortfolio.jsx
 import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import './RecipePortfolio.css';
 
-const RecipePortfolio = ({ chefId }) => {
+const RecipePortfolio = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [recipes, setRecipes] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [sortBy, setSortBy] = useState('newest');
     const [expandedRecipes, setExpandedRecipes] = useState(new Set());
 
     useEffect(() => {
-        // Fetch recipes data from the backend
-        fetch(`/api/chefs/${chefId}/recipes`)
-            .then(response => response.json())
-            .then(data => {
+        const fetchRecipes = async () => {
+            try {
+                const response = await fetch(`/api/chefs/${id}/recipes`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch recipes");
+                }
+                const data = await response.json();
                 setRecipes(data);
+            } catch (err) {
+                setError(err.message);
+                console.error("Error fetching recipes:", err);
+            } finally {
                 setLoading(false);
-            })
-            .catch(error => {
-                console.error('Error fetching recipes:', error);
-                setLoading(false);
-            });
-    }, [chefId]);
+            }
+        };
+
+        fetchRecipes();
+    }, [id]);
 
     const toggleRecipeExpansion = (recipeId) => {
         setExpandedRecipes(prev => {
@@ -57,14 +67,14 @@ const RecipePortfolio = ({ chefId }) => {
         }
     };
 
-    if (loading) {
-        return <div className="loading">Loading recipes...</div>;
-    }
+    if (loading) return <div className="loading">Loading...</div>;
+    if (error) return <div className="error">{error}</div>;
 
     const sortedRecipes = sortRecipes(recipes);
 
     return (
         <div className="recipe-portfolio">
+            <h2>My Recipes</h2>
             <div className="recipe-controls">
                 <select 
                     value={sortBy} 
@@ -76,16 +86,17 @@ const RecipePortfolio = ({ chefId }) => {
                     <option value="popular">Most Popular</option>
                 </select>
             </div>
-
             <div className="recipes-grid">
-                {sortedRecipes.map(recipe => (
+                {sortedRecipes.map((recipe) => (
                     <div key={recipe.id} className="recipe-card">
-                        <div className="recipe-image">
-                            <img 
-                                src={recipe.imageUrl || '/default-recipe.jpg'} 
-                                alt={recipe.title} 
-                            />
-                        </div>
+                        {recipe.imageUrl && (
+                            <div className="recipe-image">
+                                <img 
+                                    src={recipe.imageUrl || '/default-recipe.jpg'} 
+                                    alt={recipe.title} 
+                                />
+                            </div>
+                        )}
                         <div className="recipe-content">
                             <h3>{recipe.title}</h3>
                             <p className="recipe-description">
@@ -127,6 +138,18 @@ const RecipePortfolio = ({ chefId }) => {
                                     </span>
                                 </div>
                                 <div className="recipe-actions">
+                                    <button 
+                                        className="view-btn"
+                                        onClick={() => navigate(`/recipes/${recipe.id}`)}
+                                    >
+                                        View Recipe
+                                    </button>
+                                    <button 
+                                        className="edit-btn"
+                                        onClick={() => navigate(`/recipes/${recipe.id}/edit`)}
+                                    >
+                                        Edit Recipe
+                                    </button>
                                     <button 
                                         className="share-btn"
                                         onClick={() => shareRecipe(recipe)}
