@@ -82,6 +82,56 @@ namespace assignment.Server.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("me")]
+        public async Task<ActionResult<Chef>> GetCurrentChef()
+        {
+            // For now, we'll return the first chef as a placeholder
+            var chef = await _context.Chefs.FirstOrDefaultAsync();
+            if (chef == null)
+            {
+                return NotFound();
+            }
+            return chef;
+        }
+
+        [HttpPut("me")]
+        public async Task<IActionResult> UpdateCurrentChef(Chef chef)
+        {
+            // For now, we'll update the first chef as a placeholder
+            var existingChef = await _context.Chefs.FirstOrDefaultAsync();
+            if (existingChef == null)
+            {
+                return NotFound();
+            }
+
+            existingChef.Name = chef.Name;
+            existingChef.Bio = chef.Bio;
+            existingChef.Specialty = chef.Specialty;
+            existingChef.Email = chef.Email;
+            existingChef.Location = chef.Location;
+            existingChef.PictureUrl = chef.PictureUrl;
+
+            await _context.SaveChangesAsync();
+            return Ok(existingChef);
+        }
+
+        [HttpGet("me/recipes")]
+        public async Task<ActionResult<IEnumerable<Recipe>>> GetCurrentChefRecipes()
+        {
+            // For now, we'll return recipes for the first chef
+            var chef = await _context.Chefs.FirstOrDefaultAsync();
+            if (chef == null)
+            {
+                return NotFound("Chef not found");
+            }
+
+            var recipes = await _context.Recipes
+                .Where(r => r.ChefId == chef.Id)
+                .ToListAsync();
+
+            return recipes;
+        }
     }
 }
 

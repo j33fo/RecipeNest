@@ -31,6 +31,23 @@ namespace assignment.Server.Controllers
         {
             return await _context.Recipes.ToListAsync();
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Recipe>> CreateRecipe(Recipe recipe)
+        {
+            // For now, we'll associate the recipe with the first chef
+            var chef = await _context.Chefs.FirstOrDefaultAsync();
+            if (chef == null)
+            {
+                return BadRequest("No chef found to associate with the recipe");
+            }
+
+            recipe.ChefId = chef.Id;
+            _context.Recipes.Add(recipe);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetRecipes), new { id = recipe.Id }, recipe);
+        }
     }
 }
 

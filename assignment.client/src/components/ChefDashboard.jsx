@@ -96,6 +96,9 @@ const ChefDashboard = () => {
     const handleSubmitRecipe = async (e) => {
         e.preventDefault();
         try {
+            // Add loading state
+            setLoading(true);
+            
             const response = await fetch('/api/recipes', {
                 method: 'POST',
                 headers: {
@@ -104,28 +107,41 @@ const ChefDashboard = () => {
                 },
                 body: JSON.stringify(newRecipe)
             });
-            if (response.ok) {
-                const recipe = await response.json();
-                setRecipes(prev => [...prev, recipe]);
-                setShowAddRecipe(false);
-                setNewRecipe({
-                    title: '',
-                    description: '',
-                    ingredients: [''],
-                    instructions: [''],
-                    cookingTime: '',
-                    difficulty: 'medium',
-                    imageUrl: ''
-                });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
+
+            const recipe = await response.json();
+            setRecipes(prev => [...prev, recipe]);
+            setShowAddRecipe(false);
+            // Reset form
+            setNewRecipe({
+                title: '',
+                description: '',
+                ingredients: [''],
+                instructions: [''],
+                cookingTime: '',
+                difficulty: 'medium',
+                imageUrl: ''
+            });
+            
+            // Add success message
+            alert('Recipe added successfully!');
         } catch (error) {
             console.error('Error adding recipe:', error);
+            alert('Failed to add recipe. Please try again.');
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleEditProfile = async (e) => {
         e.preventDefault();
         try {
+            // Add loading state
+            setLoading(true);
+            
             const response = await fetch('/api/chefs/me', {
                 method: 'PUT',
                 headers: {
@@ -134,13 +150,22 @@ const ChefDashboard = () => {
                 },
                 body: JSON.stringify(editedProfile)
             });
-            if (response.ok) {
-                const updatedChef = await response.json();
-                setChef(updatedChef);
-                setShowEditProfile(false);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
+
+            const updatedChef = await response.json();
+            setChef(updatedChef);
+            setShowEditProfile(false);
+            
+            // Add success message
+            alert('Profile updated successfully!');
         } catch (error) {
             console.error('Error updating profile:', error);
+            alert('Failed to update profile. Please try again.');
+        } finally {
+            setLoading(false);
         }
     };
 

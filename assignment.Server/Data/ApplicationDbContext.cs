@@ -10,12 +10,14 @@ namespace assignment.Server.Data
         {
         }
 
-        public DbSet<Chef> Chefs { get; set; } =null!;
-        public DbSet<Recipe> Recipes { get; set; } = null!; 
+        public DbSet<Chef> Chefs { get; set; } = null!;
+        public DbSet<Recipe> Recipes { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            var seedDate = new DateTime(2024, 3, 27, 0, 0, 0, DateTimeKind.Utc);
 
             // Seed initial data
             modelBuilder.Entity<Chef>().HasData(
@@ -25,7 +27,10 @@ namespace assignment.Server.Data
                     Name = "Chef John",
                     Bio = "An experienced chef with a passion for Italian cuisine.",
                     PictureUrl = "https://example.com/chef-john.jpg",
-                    ContactInfo = "chef.john@example.com"
+                    ContactInfo = "chef.john@example.com",
+                    Specialty = "Italian Cuisine",
+                    Email = "chef.john@example.com",
+                    Location = "New York"
                 },
                 new Chef
                 {
@@ -33,7 +38,10 @@ namespace assignment.Server.Data
                     Name = "Chef Jane",
                     Bio = "A pastry chef known for her delicious desserts.",
                     PictureUrl = "https://example.com/chef-jane.jpg",
-                    ContactInfo = "chef.jane@example.com"
+                    ContactInfo = "chef.jane@example.com",
+                    Specialty = "Pastry",
+                    Email = "chef.jane@example.com",
+                    Location = "Los Angeles"
                 }
             );
 
@@ -42,17 +50,29 @@ namespace assignment.Server.Data
                 {
                     Id = 1,
                     Title = "Spaghetti Carbonara",
+                    Description = "Classic Italian pasta dish with eggs, cheese, and pancetta",
                     Ingredients = "Spaghetti, eggs, pancetta, Parmesan cheese, black pepper",
                     Instructions = "Cook spaghetti. Fry pancetta. Mix eggs and cheese. Combine all with spaghetti.",
-                    ChefId = 1 // Set the foreign key value
+                    CookingTime = 30,
+                    Difficulty = "medium",
+                    ImageUrl = "https://example.com/carbonara.jpg",
+                    ChefId = 1,
+                    CreatedAt = seedDate,
+                    Likes = 0
                 },
                 new Recipe
                 {
                     Id = 2,
-                    Title = "Tiramisu",
-                    Ingredients = "Ladyfingers, mascarpone cheese, coffee, cocoa powder, sugar, eggs",
-                    Instructions = "Layer ladyfingers soaked in coffee with mascarpone mixture. Dust with cocoa powder.",
-                    ChefId = 2 // Set the foreign key value
+                    Title = "Classic Tiramisu",
+                    Description = "Traditional Italian dessert with coffee-soaked ladyfingers and mascarpone cream",
+                    Ingredients = "Ladyfingers, mascarpone cheese, eggs, sugar, coffee, cocoa powder",
+                    Instructions = "Dip ladyfingers in coffee. Layer with mascarpone mixture. Dust with cocoa.",
+                    CookingTime = 45,
+                    Difficulty = "medium",
+                    ImageUrl = "https://example.com/tiramisu.jpg",
+                    ChefId = 2,
+                    CreatedAt = seedDate,
+                    Likes = 0
                 }
             );
         }
