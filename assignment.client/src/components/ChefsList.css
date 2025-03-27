@@ -1,0 +1,123 @@
+.chefs-list-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+}
+
+.chefs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.chef-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.chef-card:hover {
+    transform: translateY(-5px);
+}
+
+.chef-image-container {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.chef-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.chef-info {
+    padding: 1.5rem;
+}
+
+.chef-name {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.chef-specialty {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.chef-bio {
+    color: #444;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.chef-stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+.view-profile-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.view-profile-btn:hover {
+    background-color: #45a049;
+}
+
+.loading {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .chefs-list-container {
+        padding: 1rem;
+    }
+
+    .page-title {
+        font-size: 2rem;
+    }
+
+    .chefs-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+
+    .chef-image-container {
+        height: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .chefs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-title {
+        font-size: 1.8rem;
+    }
+} 

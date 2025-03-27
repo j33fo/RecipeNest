@@ -4,10 +4,15 @@ const LatestRecipes = () => {
     const [recipes, setRecipes] = useState([]);
 
     useEffect(() => {
-        // Fetch latest recipes data from the backend
         fetch('/api/recipes/latest')
-            .then(response => response.json())
-            .then(data => setRecipes(data));
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => setRecipes(data))
+            .catch(error => console.error('Error fetching latest recipes:', error));
     }, []);
 
     return (
@@ -18,6 +23,7 @@ const LatestRecipes = () => {
                     <li key={recipe.id}>
                         <h3>{recipe.title}</h3>
                         <p>{recipe.ingredients}</p>
+                        <p>{recipe.instructions}</p>
                     </li>
                 ))}
             </ul>
